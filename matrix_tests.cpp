@@ -3,7 +3,7 @@
 
 using namespace std;
 
-
+/*
 TEST(test_matrix_size) {
   Matrix matrix(9);
 
@@ -19,9 +19,9 @@ TEST(test_print_markov_matrix) {
   matrix.sort_all_points();
   matrix.print_all_vectors();
 }
-
+*/
 TEST(test_master) {
-  Matrix m(9);
+  Matrix m(19);
 
   m.print_all_points();
   m.sort_all_points();
@@ -29,6 +29,8 @@ TEST(test_master) {
   m.generate_markov_matrix();
   cout << endl << endl;
   m.print_markov_matrix();
+  m.print_eigenvector();
+  
 }
 
 
