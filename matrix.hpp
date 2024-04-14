@@ -129,6 +129,7 @@ class Matrix {
   void generate_markov_matrix() {
     int n = grid_size;
     double half = (1.0 / 2.0);
+    // double third = 0.3; // for purposes of viewing couted version better
     double third = 1.0 / 3.0;
     double fourth = 1.0 / 4.0;
     

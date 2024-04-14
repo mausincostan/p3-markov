@@ -2,7 +2,8 @@
 #include "unit_test_framework.hpp"
 
 using namespace std;
-/*
+
+
 TEST(test_matrix_size) {
   Matrix matrix(9);
 
@@ -18,7 +19,7 @@ TEST(test_print_markov_matrix) {
   matrix.sort_all_points();
   matrix.print_all_vectors();
 }
-*/
+
 TEST(test_master) {
   Matrix m(9);
 
