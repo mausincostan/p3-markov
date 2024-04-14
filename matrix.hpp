@@ -126,6 +126,86 @@ class Matrix {
     }
   }
 
+  void generate_markov_matrix() {
+    int n = grid_size;
+    double half = (1.0 / 2.0);
+    double third = 1.0 / 3.0;
+    double fourth = 1.0 / 4.0;
+    
+    // iterate for all p in points
+    for (int p : points) {
+      // shortcut vars for different directions points can go
+      int up = p + (n + 1);
+      int down = p - (n + 1);
+      int left = p - 1;
+      int right = p + 1;
+
+      // corners (1/2)
+      if (is_bot_left_corner(p)) {
+        m(p, 1) = half;
+        m(p, (n + 1)) = half;
+        continue;
+      }
+      if (is_bot_right_corner(p)) {
+        m(p, (n - 1)) = half;
+        m(p, p + (n + 1)) = half;
+        continue;
+      }
+      if (is_top_left_corner(p)) {
+        int top_left_1 = (pow(n, 2) + n) + 1;
+        int top_left_2 = (pow(n, 2) + n) - (n + 1);
+        m(p, top_left_1) = half;
+        m(p, top_left_2) = half;
+        continue;
+      }
+      if (is_top_right_corner(p)) {
+        int top_right_1 = (pow((n + 1), 2) - 1) - 1;
+        int top_right_2 = (pow((n + 1), 2) - 1) - (n + 1);
+        m(p, top_right_1) = half;
+        m(p, top_right_2) = half;
+        continue;
+      }
+  
+      // edges (1/3)
+      if (is_bot_edge(p)) {
+        m(p, right) = third;
+        m(p, left) = third;
+        m(p, up) = third;
+        continue;
+      }
+      if (is_top_edge(p)) {
+        m(p, right) = third;
+        m(p, left) = third;
+        m(p, down) = third;
+        continue;
+      }
+      if (is_left_edge(p)) {
+        m(p, right) = third;
+        m(p, up) = third;
+        m(p, down) = third;
+        continue;
+      }
+      if (is_right_edge(p)) {
+        m(p, left) = third;
+        m(p, up) = third;
+        m(p, down) = third;
+        continue;
+      }
+
+      // middle points (1/4)
+      for (int point : middle_points) {
+        if (point == p) {
+          m(p, up) = fourth;
+          m(p, down) = fourth;
+          m(p, left) = fourth;
+          m(p, right) = fourth;
+        }
+      }
+    }
+
+  }
+  
+
   // conditionals to sort points
   bool is_bot_left_corner(int num) {
     return num == 0;
