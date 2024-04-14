@@ -11,6 +11,14 @@ TEST(test_matrix_size) {
   matrix.print_markov_matrix_size();
 }
 
+TEST(test_print_markov_matrix) {
+  Matrix matrix(9);
+  
+  matrix.print_all_points();
+  matrix.sort_all_points();
+  matrix.print_all_vectors();
+}
+
 
 
 TEST_MAIN()
