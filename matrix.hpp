@@ -8,13 +8,13 @@
 #include "Eigen/Eigenvalues"
 
 using namespace std;
-using Eigen::MatrixXd;
+using namespace Eigen;
 
-class Matrix {
+class Matrixx {
   public:
   
   // custom constructor, only ctor used for Matrix class
-  Matrix(int grid_in)
+  Matrixx(int grid_in)
     : grid_size(grid_in), 
       matrix_size(calc_matrix_size(grid_in)) {
 
@@ -263,8 +263,32 @@ class Matrix {
     return solver.eigenvectors().col(index).real();
   }
 
-  void print_eigenvector() {
-    cout << get_coordinate_distribution() << endl;
+  MatrixXd calculate_eigenvector_eigenvalue_one() {
+    EigenSolver<MatrixXd> solver(m);
+
+    VectorXd eigenvalues = solver.eigenvalues().real();
+    MatrixXd eigenvectors = solver.eigenvectors().real();
+
+    for (int i = 0; i < eigenvalues.size(); ++i) {
+      if (abs(eigenvalues[i] - 1.0) < 1e-6) {
+        return eigenvectors.col(i);
+      }
+    }
+
+    return MatrixXd();  
+  }
+
+  VectorXd normalize_eigenvector(const VectorXd& eigenvector) {
+    double sum = eigenvector.sum();
+    return eigenvector / sum;
+  }
+
+  MatrixXd get_markov_matrix() {
+    return m;
+  }
+
+  void print_vector(VectorXd mat) {
+    cout << mat << endl;
   }
 
 

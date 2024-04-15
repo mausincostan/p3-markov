@@ -21,7 +21,7 @@ TEST(test_print_markov_matrix) {
 }
 */
 TEST(test_master) {
-  Matrix m(19);
+  Matrixx m(9);
 
   m.print_all_points();
   m.sort_all_points();
@@ -29,7 +29,7 @@ TEST(test_master) {
   m.generate_markov_matrix();
   cout << endl << endl;
   m.print_markov_matrix();
-  m.print_eigenvector();
+  m.print_vector(m.normalize_eigenvector(m.calculate_eigenvector_eigenvalue_one()));
   
 }
 
