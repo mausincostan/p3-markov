@@ -16,7 +16,7 @@ def random_walk(steps: int) -> None:
     x = 0  # x init to 0
     y = 0  # y init to 0
     # iterate over "steps" amount of times
-    for i in range(steps):
+    for _ in range(steps):
         # check possible moves at a location
         choices = []
         if x > 0:
@@ -41,9 +41,9 @@ def random_walk(steps: int) -> None:
     heatmap[y][x] += 1
 
 # call the random_walk function ITERATIONS number of times
-for i in range(ITERATIONS):
+for iteration in range(ITERATIONS):
     # alternate between even and odd steps
-    random_walk(STEPS) if i % 2 == 0 else random_walk(STEPS + 1)
+    random_walk(STEPS) if iteration % 2 == 0 else random_walk(STEPS + 1)
 
 # convert heatmap 2d list to a numpy array for visualization purposes
 heatmap_array = np.array(heatmap)
