@@ -21,16 +21,9 @@ TEST(test_print_markov_matrix) {
 }
 */
 TEST(test_master) {
-  Matrixx m(9);
+  Matrixx m(24);
 
-  m.print_all_points();
-  m.sort_all_points();
-  m.print_all_vectors();
-  m.generate_markov_matrix();
-  cout << endl << endl;
-  m.print_markov_matrix();
-  m.print_vector(m.normalize_eigenvector(m.calculate_eigenvector_eigenvalue_one()));
-  
+  m.test_master(24);
 }
 
 

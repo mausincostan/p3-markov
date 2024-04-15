@@ -248,7 +248,7 @@ class Matrixx {
            is_top_left_corner(num) || is_top_right_corner(num); 
   }
 
-
+  /* WORKS BUT DOESNT ACTUALLY CALCULATE STEADY STATE VECTOR
   Eigen::VectorXd get_coordinate_distribution() {
     Eigen::EigenSolver<Eigen::MatrixXd> solver(m);
     Eigen::VectorXd eigenvalues_real = solver.eigenvalues().real();
@@ -262,26 +262,74 @@ class Matrixx {
     }
     return solver.eigenvectors().col(index).real();
   }
+  */
 
-  MatrixXd calculate_eigenvector_eigenvalue_one() {
-    EigenSolver<MatrixXd> solver(m);
+  /* FAILED ATTEMPT DOES NOT WORK
+  VectorXd steady_state_vector() {
+    int n = matrix_size; // Dimension of transition matrix P
+    MatrixXd P = m;
+    MatrixXd I = MatrixXd::Identity(n, n); // Identity matrix of same size as P
+    MatrixXd Q = P - I; // Compute matrix Q
+    VectorXd e = VectorXd::Ones(n); // Vector of all ones
 
-    VectorXd eigenvalues = solver.eigenvalues().real();
-    MatrixXd eigenvectors = solver.eigenvectors().real();
+    // Append vector e to Q
+    Q.conservativeResize(Q.rows() + 1, NoChange);
+    Q.bottomRows(1) = e.transpose();
 
-    for (int i = 0; i < eigenvalues.size(); ++i) {
-      if (abs(eigenvalues[i] - 1.0) < 1e-6) {
-        return eigenvectors.col(i);
-      }
+    // Transpose Q
+    MatrixXd QT = Q.transpose();
+    std::cout << "Size of QT: " << QT.rows() << "x" << QT.cols() << std::endl;
+    
+    // Construct vector b with correct dimensions
+    VectorXd b = VectorXd::Zero(QT.rows()); // Size of b should match the rows of QT
+    std::cout << "Size of b: " << b.size() << std::endl;
+    // Set the last element of b to 1
+    b(n - 1) = 1;
+
+    // Solve for x using least squares
+    VectorXd x = QT.jacobiSvd(ComputeThinU | ComputeThinV).solve(b);
+    
+    
+
+    return x;
+}
+*/
+
+  VectorXd computeSteadyState() {
+    EigenSolver<MatrixXd> es(m.transpose());
+
+    // Find the index of the eigenvalue with unit magnitude
+    int index;
+    double magnitude = 0.0;
+    for (int i = 0; i < es.eigenvalues().rows(); ++i) {
+        double currMagnitude = abs(es.eigenvalues()(i).real());
+        if (abs(currMagnitude - 1.0) < 1e-9 && currMagnitude > magnitude) {
+            magnitude = currMagnitude;
+            index = i;
+        }
     }
+  
+    // Extract the corresponding eigenvector
+    VectorXd pi = es.eigenvectors().col(index).real();
 
-    return MatrixXd();  
+    // Normalize the steady-state vector
+    pi /= pi.sum();
+
+    return pi;
+}
+
+  double sumVector(const VectorXd& v) {
+      double sum = 0.0;
+      for (int i = 0; i < v.size(); ++i) {
+          sum += v(i);
+      }
+      return sum;
   }
 
-  VectorXd normalize_eigenvector(const VectorXd& eigenvector) {
-    double sum = eigenvector.sum();
-    return eigenvector / sum;
+  VectorXd vector_multiply(const VectorXd& v, double num) {
+    return v * num;
   }
+
 
   MatrixXd get_markov_matrix() {
     return m;
@@ -291,6 +339,15 @@ class Matrixx {
     cout << mat << endl;
   }
 
+  void test_master(int n) {
+    sort_all_points();
+    generate_markov_matrix();
+    cout << "Markov Transition Matrix Below: \n\n";
+    print_markov_matrix();
+    cout << "\nSteady State Vector Below: \n\n";
+    print_vector(computeSteadyState());
+    cout << endl << endl;
+  }
 
   private:
   int grid_size;
