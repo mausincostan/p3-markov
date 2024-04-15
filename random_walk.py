@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 import time
 
 # declare some constant variables
-STEPS = 10000
-ITERATIONS = 10000
+STEPS = 1000
+ITERATIONS = 100000
 N = 10 # coordinates will range from 0 - 99 x 0 - 99
 START_TIME = time.time()
 
