@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import time
 
 # declare some constant variables
-STEPS = 1000
-ITERATIONS = 100000
+STEPS = 10000
+ITERATIONS = 1000000
 N = 10 # coordinates will range from 0 - 9 x 0 - 9
 START_TIME = time.time()
 
@@ -62,6 +62,10 @@ plt.colorbar(im)
 plt.title(f"Random Walk Simulation With {STEPS} Steps and {ITERATIONS} Iterations")
 # display heat map
 plt.show()
+
+for i in heatmap_array:
+    for j in i:
+        print(100*j/ITERATIONS)
 
 # print the time elapsed
 END_TIME = time.time()
